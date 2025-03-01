@@ -1,11 +1,12 @@
 
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X, Globe } from "lucide-react";
 
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [language, setLanguage] = useState("en"); // Default language is English
 
   useEffect(() => {
     const handleScroll = () => {
@@ -24,13 +25,20 @@ const NavBar = () => {
     setIsOpen(!isOpen);
   };
 
+  const toggleLanguage = () => {
+    setLanguage(prev => prev === "en" ? "es" : "en");
+    // In a real application, this would trigger translations across the app
+    console.log("Language switched to:", language === "en" ? "Spanish" : "English");
+  };
+
   const navLinks = [
-    { name: "Home", path: "/" },
-    { name: "Products", path: "#products" },
-    { name: "Features", path: "#features" },
-    { name: "Pricing", path: "#pricing" },
-    { name: "About", path: "#about" },
-    { name: "Contact", path: "#contact" },
+    { name: "Home", path: "/", isHashLink: false },
+    { name: "Products", path: "#products", isHashLink: true },
+    { name: "Features", path: "#features", isHashLink: true },
+    { name: "Pricing", path: "#pricing", isHashLink: true },
+    { name: "About", path: "#about", isHashLink: true },
+    { name: "Contact", path: "#contact", isHashLink: true },
+    { name: "Dashboard", path: "/dashboard", isHashLink: false },
   ];
 
   return (
@@ -50,23 +58,40 @@ const NavBar = () => {
         {/* Desktop Navigation */}
         <nav className="hidden lg:flex items-center gap-8">
           {navLinks.map((link) => (
-            <a
-              key={link.name}
-              href={link.path}
-              className="text-gray-700 hover:text-ice-blue transition-all-300 font-medium"
-            >
-              {link.name}
-            </a>
+            link.isHashLink ? (
+              <a
+                key={link.name}
+                href={link.path}
+                className="text-gray-700 hover:text-ice-blue transition-all-300 font-medium"
+              >
+                {link.name}
+              </a>
+            ) : (
+              <Link
+                key={link.name}
+                to={link.path}
+                className="text-gray-700 hover:text-ice-blue transition-all-300 font-medium"
+              >
+                {link.name}
+              </Link>
+            )
           ))}
         </nav>
 
         <div className="hidden lg:flex items-center gap-4">
+          <button 
+            onClick={toggleLanguage}
+            className="flex items-center gap-1 text-gray-700 hover:text-ice-blue px-3 py-1 rounded-full border border-gray-200 hover:border-ice-blue transition-all-300"
+          >
+            <Globe size={16} />
+            <span>{language === "en" ? "EN" : "ES"}</span>
+          </button>
           <a href="#login" className="button-outline">
             Login
           </a>
-          <a href="#register" className="button-secondary">
-            Get Started
-          </a>
+          <Link to="/dashboard" className="button-secondary">
+            Dashboard
+          </Link>
         </div>
 
         {/* Mobile Menu Button */}
@@ -100,24 +125,42 @@ const NavBar = () => {
 
           <nav className="flex flex-col gap-6 mb-10">
             {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.path}
-                className="text-gray-700 hover:text-ice-blue transition-all-300 text-lg font-medium"
-                onClick={toggleMenu}
-              >
-                {link.name}
-              </a>
+              link.isHashLink ? (
+                <a
+                  key={link.name}
+                  href={link.path}
+                  className="text-gray-700 hover:text-ice-blue transition-all-300 text-lg font-medium"
+                  onClick={toggleMenu}
+                >
+                  {link.name}
+                </a>
+              ) : (
+                <Link
+                  key={link.name}
+                  to={link.path}
+                  className="text-gray-700 hover:text-ice-blue transition-all-300 text-lg font-medium"
+                  onClick={toggleMenu}
+                >
+                  {link.name}
+                </Link>
+              )
             ))}
           </nav>
 
           <div className="flex flex-col gap-4 mt-auto">
+            <button 
+              onClick={toggleLanguage}
+              className="flex items-center justify-center gap-1 text-gray-700 hover:text-ice-blue p-2 rounded-full border border-gray-200 hover:border-ice-blue transition-all-300"
+            >
+              <Globe size={16} />
+              <span>{language === "en" ? "English" : "Español"}</span>
+            </button>
             <a href="#login" className="button-outline text-center">
               Login
             </a>
-            <a href="#register" className="button-secondary text-center">
-              Get Started
-            </a>
+            <Link to="/dashboard" className="button-secondary text-center">
+              Dashboard
+            </Link>
           </div>
         </div>
       </div>
