@@ -1,5 +1,6 @@
 
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, PhoneCall, HeartPulse, Bell } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const ProductsSection = () => {
   const products = [
@@ -16,7 +17,8 @@ const ProductsSection = () => {
         "Custom emergency contacts",
         "AI Guardian integration",
         "Daily well-being check-ins"
-      ]
+      ],
+      description: "Our SOS Pendant provides immediate emergency response with 24/7 monitoring by our dedicated call center in Malaga, Spain. When activated, our trained professionals respond immediately, assessing the situation and dispatching appropriate help."
     },
     {
       id: "medical-dispenser",
@@ -31,7 +33,8 @@ const ProductsSection = () => {
         "AI Guardian reminders",
         "Call Center monitoring",
         "Prescription management"
-      ]
+      ],
+      description: "Every medication photo is monitored by our professional team to ensure proper medication adherence. Our call center staff verifies each dose, and if medications are missed, we provide immediate follow-up to ensure your health is not compromised."
     },
     {
       id: "glucose-monitor",
@@ -46,7 +49,8 @@ const ProductsSection = () => {
         "Dietary recommendations",
         "Emergency response",
         "Health trend analysis"
-      ]
+      ],
+      description: "Each glucose check is monitored by our dedicated healthcare professionals. Our call center team analyzes your readings in real-time, providing immediate intervention for concerning levels and personalized advice to maintain optimal health."
     }
   ];
 
@@ -61,6 +65,12 @@ const ProductsSection = () => {
           <p className="text-lg text-gray-600 animate-fade-in">
             Our suite of connected devices works seamlessly together to provide comprehensive health monitoring and emergency response capabilities.
           </p>
+          <div className="mt-6 flex justify-center items-center gap-2 animate-fade-in">
+            <PhoneCall size={20} className="text-ice-blue" />
+            <p className="text-md text-gray-700 font-medium">
+              24/7 Dedicated Call Center in Malaga, Spain
+            </p>
+          </div>
         </div>
         
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -92,13 +102,39 @@ const ProductsSection = () => {
                   ))}
                 </ul>
                 
-                <a href={`#${product.id}`} className="button-secondary w-full flex items-center justify-center gap-2">
+                {/* Monitoring highlight for each product */}
+                <div className="mb-6 p-3 bg-ice-blue/10 rounded-lg flex items-start gap-2">
+                  {product.id === "sos-pendant" && <Bell size={16} className="text-ice-blue shrink-0 mt-1" />}
+                  {product.id === "medical-dispenser" && <HeartPulse size={16} className="text-ice-blue shrink-0 mt-1" />}
+                  {product.id === "glucose-monitor" && <HeartPulse size={16} className="text-ice-blue shrink-0 mt-1" />}
+                  <p className="text-sm text-gray-700">{product.description.substring(0, 120)}...</p>
+                </div>
+                
+                <Link 
+                  to={`/products/${product.id}`} 
+                  className="button-secondary w-full flex items-center justify-center gap-2"
+                >
                   Learn More
                   <ArrowRight size={16} />
-                </a>
+                </Link>
               </div>
             </div>
           ))}
+        </div>
+
+        <div className="mt-12 bg-gradient-to-r from-ice-blue/10 via-ice-blue/5 to-ice-blue/10 p-6 rounded-xl animate-fade-in">
+          <div className="flex flex-col md:flex-row items-center justify-center gap-4 text-center md:text-left">
+            <div className="rounded-full bg-ice-blue/20 p-3">
+              <PhoneCall size={24} className="text-ice-blue" />
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold mb-1">24/7 Dedicated Monitoring Service</h3>
+              <p className="text-gray-600">
+                Our professional call center in Malaga monitors every SOS alert, medication photo, and glucose reading to ensure your safety and well-being. 
+                <span className="hidden md:inline"> Available in both English and Spanish with full translation services provided.</span>
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
